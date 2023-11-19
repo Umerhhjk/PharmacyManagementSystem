@@ -54,26 +54,6 @@ void order(int choice){
 	fclose(fptr);
 }
 
-//void bug(int choice){
-//	int n;
-//	char *ctime(const time_t *timer);
-//	char report[200];
-//	printf("\nDescribe the issue you are facing while running the program: ");
-//	int i=0;
-//	while(report[i] != '\0'){
-//		scanf(" %c",&report[i]);
-//		i++;
-//		n++;
-//	}
-//	FILE *bugfile;
-//	bugfile = fopen("bug.txt", "a");	
-//	for(i=0;i<n;i++){		
-//		fprintf(bugfile, "%c", report[i]);	
-//	}
-//	fclose(bugfile);
-//}
-
-
 //this is the bug report option in which user can report the bug. all the bug report along with the current time will move to the bug.txt
 void bug(const char *report) {
     // Open the file in write mode
@@ -101,7 +81,7 @@ void bug(const char *report) {
     // Close the file
     fclose(file);
 
-    printf("Bug report has been saved to bug.txt.\n");
+    printf("Your report have been send to the Admin. Thank you.\n");
 }
 
 
@@ -133,12 +113,10 @@ int main(){
 		printf("\n\n \t \t \t Welcome to the Phamacist Portal\n");
 		printf("\n1)For Ordering Purpose press 1\n");
 		printf("2)For Bug Reporting press 2\n");
-		printf("3)For Adding Money into Transaction press 3\n");
-		printf("4)For Checking Availability of Medicines/Stock press 4\n");
-		printf("5)For knowing the location of the Medicine in store press 5\n");
+		printf("3)For Checking Availability of Medicines/Stock press 3\n");
+		printf("4)For knowing the location of the Medicine in store press 4\n");
 		printf("\nEnter your Choice = ");
 		scanf("%d",&choice);
-		char bugReportBuffer[1000];
 		switch(choice){
 			case 1:
 				//case 1 will be giving option to the pharmacist to add new odering medicines into the stock
@@ -148,6 +126,8 @@ int main(){
 				// Buffer to store user input
 			    // Get bug report from the user
 			    printf("Enter the bug report: ");
+			    char bugReportBuffer[1000];
+			    fgets(bugReportBuffer, sizeof(bugReportBuffer), stdin);
 			    if (fgets(bugReportBuffer, sizeof(bugReportBuffer), stdin) == NULL) {
 			        printf("Error reading bug report.\n");
 			        return 1;
@@ -155,6 +135,8 @@ int main(){
 			    // Call the bug function with the bug report
 			    bug(bugReportBuffer);
 				break;
+			
+					
 		}
 	}
 	else{
@@ -164,5 +146,4 @@ int main(){
 	}
 	return 0;
 }
-
 
