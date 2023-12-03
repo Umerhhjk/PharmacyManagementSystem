@@ -1,0 +1,5 @@
+
+[2023-12-03 19:33:41]
+I.D: 4		Augmentin:1
+I.D: 6		Disprin:2
+I.D: 10		Omeprazole:9

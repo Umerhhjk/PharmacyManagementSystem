@@ -1,197 +1,108 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include<stdio.h>
+#include<conio.h>
+#include<windows.h>
+#include<string.h>
+#include<stdlib.h>
+#include<time.h>
+#include<stdbool.h>
 
-void displayMedicines(char medicine[][100], float price[], int quantity[]);
-void purchaseMedicine(char medicine[][100], float price[], int quantity[]);
+#define FILENAME_SIZE 1024
+#define MAX_LINE 2048
 
-int main() {
-    char medicine[2][100];
-    float price[2];
-    int quantity[2];
-    int i, numb = 0;
-    char name[10];
-    int choice;
-    int remarks=0;
-
-    FILE *file = fopen("medicines.txt", "w");
-
-    if (file == NULL) {
-        printf("ERROR OPENING FILE!\n");
-        exit(1);
+void print_stock(){
+	FILE *fp;
+	char ch;
+	fp = fopen("drug.txt", "r");
+	 if (fp == NULL) {
+        perror("Error opening file");
     }
-
-    for (i = 0; i < 2; i++) {
-        printf("ENTER THE NAME OF THE MEDICINE %d: ", i + 1);
-        scanf("%s", medicine[i]);
-
-        printf("ENTER THE PRICE OF THE MEDICINE %d: ", i + 1);
-        scanf("%f", &price[i]);
-
-        printf("ENTER THE QUANTITY OF THE MEDICINE %d: ", i + 1);
-        scanf("%d", &quantity[i]);
-
-        fprintf(file, "%s,%f,%d\n", medicine[i], price[i], quantity[i]);
+    // Read and display the contents of the file character by character
+    printf("\n");
+      while ((ch = fgetc(fp)) != EOF) {
+        putchar(ch);
     }
-
-    fclose(file);
-      
-    printf("\n\t\t!!!WELCOME TO THE PHARMACEUTICAL MANAGEMENT SYSTEM!!!\n");
-
-    do {
-    	printf("\n");
-        printf("1.DISPLAY MEDICINES\n");
-        printf("2.PURCHASE MEDICINES\n");
-        printf("3. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                displayMedicines(medicine, price, quantity);
-                break;
-
-            case 2:
-                purchaseMedicine(medicine, price, quantity);
-                break;
-
-            case 3:
-            	//remarks of the customer!!!
-                printf("\nENTER:\n1)EXCELLENT\n2)GOOD\n3)SATISFACTORY");
-                printf("\nHOW WAS OUR SERVICE: ");
-                scanf("%d",&remarks);
-                printf("EXITING PROGRAM. GOODBYE!\n");
-                break;
-
-            default:
-                printf("INVALID CHOICE. PLEASE ENTER THE VALID OPTION.\n");
-        }
-    } while (choice != 3);
-
-    return 0;
+    fclose(fp);
 }
-//TO DISPLAY WHOLE MENU OF THE MEDICINES
-void displayMedicines(char medicine[][100], float price[], int quantity[]) {
-    int i;
-    printf("MEDICINE   PRICE   QUANTITY\n");
-    for (i = 0; i < 2; i++) {
-        printf("%s   %.2f     %d\n", medicine[i], price[i], quantity[i]);
-        printf("\n");
+
+void customer_order(){
+	int unique_medicines, id, medicine[20]={0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0};
+	FILE *filepointer, *fp, *filepointer2;
+	char ch;
+    filepointer = fopen("current_order.txt", "w+");
+    fp = fopen("order_history.txt", "a");
+    filepointer2 = fopen("pharmacist_orderhistory.txt", "a");
+    if (filepointer == NULL) {
+        printf("Error opening file.\n");
     }
-}
-//TO PURCHASE MEDICINES
-void purchaseMedicine(char medicine[][100], float price[], int quantity[]) {
-    char name[100];
-    char a[10][100];
-    float b[10];
-    int   c[10];
-    int i=0;
-    int numb=0;
-    int found=0;
-    int row=0;
-    char opt;
-    float subtotal=0.0,m=0.0,discount=0.0,total=0.0,GST=0.0; 
-   //TAKING INPUT FOR THE NAME OF MEDICINES FROM THE USER
-    do {
-    	getchar();
-        puts("PLEASE ENTER THE NAME OF THE MEDICINE");
-    fgets(name, sizeof(name), stdin);
-    name[strcspn(name, "\n")] = '\0';
-    //CHECKING IF ITS AVAILABLE
-        for (i = 0; i < 2; i++) {
-            if (strcasecmp(medicine[i], name) == 0){
-			 strcpy(a[i], medicine[i]);
-                b[i] = price[i];
-
-                found = 1;
-                row = i;
-
-                break;
-            }
-            
-        }
-
-        if (found) {
-            printf("THE MEDICINE IS AVAILABLE.\n");
-            printf("PLEASE ENTER THE CORRECT QUANTITY: ");
-            scanf("%d", &numb);
-
-            // Check if the requested quantity is available
-            while (numb > quantity[row]) {
-                printf("\nPLEASE ENTER THE CORRECT QUANTITY: ");
-                scanf("%d", &numb);
-            }
-            quantity[row] -= numb;
-            c[row]=numb;
-            
-        }
-		     else {
-            printf("SORRY, THE MEDICINE IS NOT AVAILABLE. PLEASE TRY AGAIN.\n");
-        }
-        //ASKING FOR ANOTHER INPUT
-        
-        printf("\nDO YOU WANT TO PURCHASE ANOTHER MEDICINE? (y/n): ");
-       scanf(" %c", &opt);
-    } while (opt == 'y');
-    //CALCULATING THE DISCOUNT,SUB-TOTAL,GST,DISCOUNT AND TOTAL
-    for(i=0;i<row+1;i++){
-    		m=b[i]*c[i];
-    		subtotal=subtotal+m;
-    	}
-    		
-    //OFFERING DISCOUNT of 15% if the subtotal is greater than RS 3000/-
-	//GST OF 5% of the sub-total;
-			 GST= 0.05*subtotal;
-			if(subtotal>3000.000){
-				discount=0.15*subtotal;
-				total=subtotal+GST-discount;
-			}
-			else{
-				discount=0.00;
-				total=subtotal+GST;
-			}
-    // printing the receipt of the purchased item
-    char receipt;
-    printf("\nDO YOU WANT THE RECEIPT OF THE PURCHASED MEDICINES?(y/n) ");
-    i=0;
-    receipt=getche();
-    switch (receipt){
-    	case  'y' :
-    		printf("\n\t\t\t !!!!!!!!PHARMACUETICAL MANAGEMENT SYSTEM!!!!!!!!!");
-    		printf("\n");
-    		printf("\n-------------------------------------------------------------------");
-    		printf("\n");
-    		printf("\nYOU HAVE ORDERED:");
-    		printf("\n-------------------------------------------------------------------");
-    		printf("\n MEDICINES    QUANTITY     PRICE(RS)");
-    		printf("\n-------------------------------------------------------------------");
-    		for(i=0;i<row+1;i++){
-    			printf("\n%s        %d         %.2f ",a[i],c[i],b[i]*c[i]);
-    			printf("\n");
-    			m=b[i]*c[i];
-    			subtotal=subtotal+m;
-			}
-			
-			
-			printf("\n-------------------------------------------------------------------");
-			printf("\n-------------------------------------------------------------------");
-			printf("\n\t\t\t\t\t\tSUB-TOTAL: %.2f",subtotal);
-			printf("\n\t\t\t\t\t\tDISCOUNT: %.2f",discount);
-			printf("\n\t\t\t\t\t\tG.S.T: %.2f",GST);
-			printf("\n\t\t\t\t\t\tTOTAL: %.2f",total);
-			printf("\n-------------------------------------------------------------------");
-    		printf("\n\t\t!!!!!!!THANK YOU FOR SHOPPING.HOPE YOU WILL SHOP AGAIN!!!!!!");
-    		
-    		break;
-    		case'n':
-    		printf("\nSUB-TOTAL: %.2f",subtotal);
-			printf("\nDISCOUNT: %.2f",discount);
-			printf("\nG.S.T: %.2f",GST);
-			printf("\nTOTAL: %.2f",total);
-			break;
-			default:
-				printf("\nINVALID INPUT");
-    			
+    if (fp == NULL){
+    	printf("Error opening file.\n");
 	}
-	printf("\nPRESS 3 TO EXIT ");
+	print_stock();
+	//Take number of unique medicines to order and then use array with the I.D in 0,2 and so on.
+	//The amount is taken as input and then stored in the array right besides the I.D.
+	printf("Enter the number of different medicine you want to order:");
+	scanf("%d", &unique_medicines);
+	for(int i=1; i <= unique_medicines; i++){
+		printf("Enter the I.D of medicine %d:", i);
+		scanf("%d", &id);
+        for(int j=0; j<20; j++){
+            if(id == medicine[j]){
+                printf("Enter Amount:");
+                scanf("%d", &medicine[j+1]);
+            }
+            j++;
+        }
+	}
+    for(int j=1; j<20; j++){
+        if(medicine[j] != 0){
+            switch(medicine[j-1]){
+                case 0:
+                	fprintf(filepointer, "I.D: %d\t\tPanadol:%d\n", medicine[j], medicine[j-1]);
+                	break;
+                case 1:
+                	fprintf(filepointer, "I.D: %d\t\tAugmentin:%d\n", medicine[j], medicine[j-1]);
+                	break;
+               	case 2:
+                	fprintf(filepointer, "I.D: %d\t\tDisprin:%d\n", medicine[j], medicine[j-1]);
+                	break;
+                case 3:
+                	fprintf(filepointer, "I.D: %d\t\tAtivan:%d\n", medicine[j], medicine[j-1]);
+                	break;
+               	case 4:
+                	fprintf(filepointer, "I.D: %d\t\tAmoxicillin:%d\n", medicine[j], medicine[j-1]);
+               		break;
+                case 5:
+              		fprintf(filepointer, "I.D: %d\t\tZyrtec:%d\n", medicine[j], medicine[j-1]);
+               		break;
+                case 6:
+                	fprintf(filepointer, "I.D: %d\t\tBrufen:%d\n", medicine[j], medicine[j-1]);
+                	break;
+                case 7:
+                	fprintf(filepointer, "I.D: %d\t\tMetformin:%d\n", medicine[j], medicine[j-1]);
+                	break;
+                case 8:
+                	fprintf(filepointer, "I.D: %d\t\tInsulin:%d\n", medicine[j], medicine[j-1]);
+                	break;
+                case 9:
+					fprintf(filepointer, "I.D: %d\t\tOmeprazole:%d\n", medicine[j], medicine[j-1]);
+                	break;
+			}
+		}
+		j++;
+    }
+    //append the current order to order history and pharmacist order history.
+    fseek(fp, 0, SEEK_END);
+    fseek(filepointer, 0, SEEK_SET);
+    time_t rawtime;
+    struct tm *timeinfo;
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    char timeString[80];
+    strftime(timeString, sizeof(timeString), "%Y-%m-%d %H:%M:%S", timeinfo);
+    fprintf(fp, "\n[%s]\n", timeString);
+    fprintf(filepointer2, "\n[%s]\n", timeString);
+	while ((ch = fgetc(filepointer)) != EOF) {
+        fputc(ch, fp);
+        fputc(ch, filepointer2);
+    }
 }
