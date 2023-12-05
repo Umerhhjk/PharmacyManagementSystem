@@ -98,13 +98,4 @@ Location: Shelf No. 10
  
 -----------------------------------------
 
-Id: 10 
-Name: 3 
-MFG Date: 12 12 12 
-Expiry Date: 13 12 24 
-Price: $40 
-Amount: 5 Units
-Location: Shelf No. 5 
- 
------------------------------------------
 
