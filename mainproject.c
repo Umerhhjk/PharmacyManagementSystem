@@ -36,6 +36,16 @@ struct drug{
 		int row;
 };
 
+void reviews(){
+    char data[1000];
+    FILE *review;
+    review = fopen("remarks.txt","r");
+    while(fgets(data, sizeof(data), review) != NULL){
+        printf("%s\n\n", data);
+    }
+    fclose(review);
+}
+
 void passwordchange(){
     FILE *admin, *pharmacist;
     int choice;
@@ -43,6 +53,7 @@ void passwordchange(){
     printf("Whose Password is to be changed\n");
     printf("1)Admin\n");
     printf("2)Pharmacist\n");
+    printf("Enter Choice:");
     scanf("%d", &choice);
     if(choice == 1){
         admin= fopen("adminpassword.txt", "w");
@@ -563,11 +574,12 @@ int admin(){
     if(loginadmin(username, password)){
         printf("Login successful!\n");
 		printf("\n\n\n\t\tWelcome Admin\n");
-		while(choice!=4){
+		while(choice!=5){
 			printf("\n1 bug report");
 			printf("\n2 order history");
             printf("\n3 Change Password");
-			printf("\n4 Exit");
+            printf("\n4 See Reviews");
+			printf("\n5 Exit");
 			printf("\nEnter your choice:");
 			scanf("%d", &choice);
 			switch(choice){
@@ -580,6 +592,9 @@ int admin(){
                 case 3:
                     passwordchange();
                     break;
+                case 4:
+                    reviews();
+                    break;
 			}
     	}
 	}
@@ -590,10 +605,15 @@ int admin(){
 }
 
 void customer(){
+    char feedback[1000];
 	int choice, remarks;
-	FILE *filePointer1;
+	FILE *filePointer1, *remark;
     filePointer1 = fopen("current_order.txt", "w+");
     if (filePointer1 == NULL) {
+        printf("Error opening file.\n");
+    }
+    remark = fopen("remarks.txt", "a");
+    if (remark == NULL) {
         printf("Error opening file.\n");
     }
 
@@ -602,16 +622,40 @@ void customer(){
 	printf("\n1)For Ordering Purpose\n");
 	printf("2)Exit");
 	printf("\nEnter your Choice = ");
-	scanf("%d",&choice);
+	scanf(" %d",&choice);
 	switch(choice){
 		case 1:
 			customer_order();
 			break;
 		case 2:
             //remarks of the customer!!!
-            printf("\nENTER:\n1)EXCELLENT\n2)GOOD\n3)SATISFACTORY");
+            printf("\n1)Excellent\n2)Good\n3)Satisfactory\n4)Ok\n5)Unsatisfactory");
             printf("\nHOW WAS OUR SERVICE: ");
             scanf("%d",&remarks);
+            time_t rawtime;
+            struct tm *timeinfo;
+            time(&rawtime);
+            timeinfo = localtime(&rawtime);
+            char timeString[80];
+            strftime(timeString, sizeof(timeString), "%Y-%m-%d %H:%M:%S", timeinfo);
+            fprintf(remark, "\n[%s]\n", timeString);
+            switch(remarks){
+                case 1:
+                    fprintf(remark, "Excellent");
+                    break;
+                case 2:
+                    fprintf(remark, "Good");
+                    break;
+                case 3:
+                    fprintf(remark, "Satisfactory");
+                    break;
+                case 4:
+                    fprintf(remark, "Ok");
+                    break;
+                case 5:
+                    fprintf(remark, "UnSatisfactory");
+                    break;
+            }
             printf("EXITING PROGRAM. GOODBYE!\n");
             break;
         default:
