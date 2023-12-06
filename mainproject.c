@@ -136,7 +136,7 @@ void print_stock(){
 //Function to print reciept
 void reciept(int medicine[20], char name[50]){
     int sum=0;
-    printf("\n\n\n\n\t\t\t\tPharmacy\n");
+    printf("\n\n\n\n\t\t\tP H A R M A C Y\n\n");
     printf("Name:- %s", name);
     time_t rawtime;
     struct tm *timeinfo;
@@ -196,6 +196,8 @@ void reciept(int medicine[20], char name[50]){
     }
     printf("\n-------------------------------------------------------------------\n");
     printf("Total Price:\t\t%d", sum);
+    printf("\n-------------------------------------------------------------------\n");
+    printf("\n\t\t\tThank you for Shopping\n");
     printf("\n-------------------------------------------------------------------\n");
 }
 
