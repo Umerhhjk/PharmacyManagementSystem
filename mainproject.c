@@ -1,7 +1,7 @@
 //Project Members
 //Member 1: Syed Umer Taiyab (23K-2016)
 //Member 2: Muhammad Owais Muhammad Rafiq (23K-2042)
-//Member 3: Abubakr Bin Hassan (23K-2025)
+//Member 3: Abubakar Bin Hassan (23K-2025)
 #include<stdio.h>
 #include<conio.h>
 #include<windows.h>
