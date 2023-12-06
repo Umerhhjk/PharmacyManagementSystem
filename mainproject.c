@@ -36,9 +36,37 @@ struct drug{
 		int row;
 };
 
+void passwordchange(){
+    FILE *admin, *pharmacist;
+    int choice;
+    char data[20];
+    printf("Whose Password is to be changed\n");
+    printf("1)Admin\n");
+    printf("2)Pharmacist\n");
+    scanf("%d", &choice);
+    if(choice == 1){
+        admin= fopen("adminpassword.txt", "w");
+        printf("Enter New Password:");
+        scanf("%s", data);
+        fprintf(admin, "%s", data);
+    }
+    else if(choice == 2){
+        pharmacist= fopen("pharmacistpassword.txt", "w");
+        printf("Enter New Password:");
+        scanf("%s", data);
+        fprintf(pharmacist, "%s", data);
+    }
+    else{
+        printf("Invalid choice");
+    }
+}
+
 int loginadmin(char username[], char password[]){
     char validUsername[] = "umer";
-    char validPassword[] = "admin";
+    FILE *filepassword;
+    filepassword = fopen("adminpassword.txt", "r");
+    char validPassword[50];
+    fgets(validPassword, sizeof(validPassword), filepassword);
     if(strcmp(username, validUsername) == 0 && strcmp(password, validPassword) == 0){
         return 1; 
     } 
@@ -49,7 +77,10 @@ int loginadmin(char username[], char password[]){
 
 int loginpharmacist(char username[], char password[]){
     char validUsername[] = "owais";
-    char validPassword[] = "pharmacist";
+    FILE *filepassword;
+    filepassword = fopen("pharmacistpassword.txt", "r");
+    char validPassword[50];
+    fgets(validPassword, sizeof(validPassword), filepassword);
     if(strcmp(username, validUsername) == 0 && strcmp(password, validPassword) == 0){
         return 1; 
     } 
@@ -532,10 +563,11 @@ int admin(){
     if(loginadmin(username, password)){
         printf("Login successful!\n");
 		printf("\n\n\n\t\tWelcome Admin\n");
-		while(choice!=3){
+		while(choice!=4){
 			printf("\n1 bug report");
 			printf("\n2 order history");
-			printf("\n3 Exit");
+            printf("\n3 Change Password");
+			printf("\n4 Exit");
 			printf("\nEnter your choice:");
 			scanf("%d", &choice);
 			switch(choice){
@@ -545,6 +577,9 @@ int admin(){
     			case 2:
     				readfile(filename2);
 					break;
+                case 3:
+                    passwordchange();
+                    break;
 			}
     	}
 	}
