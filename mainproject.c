@@ -136,8 +136,8 @@ void print_stock(){
 //Function to print reciept
 void reciept(int medicine[20], char name[50]){
     int sum=0;
-    printf("\n\n\n\n\t\t\tP H A R M A C Y\n\n");
-    printf("Name:- %s", name);
+    printf("\n\n\n\n\t\t\tP H A R M A C Y\n");
+    printf("Name:- %s\n", name);
     time_t rawtime;
     struct tm *timeinfo;
     time(&rawtime);
@@ -197,6 +197,7 @@ void reciept(int medicine[20], char name[50]){
     printf("\n-------------------------------------------------------------------\n");
     printf("Total Price:\t\t%d", sum);
     printf("\n-------------------------------------------------------------------\n");
+    printf("\n-------------------------------------------------------------------\n");
     printf("\n\t\t\tThank you for Shopping\n");
     printf("\n-------------------------------------------------------------------\n");
 }
@@ -204,7 +205,7 @@ void reciept(int medicine[20], char name[50]){
 void customer_order(){
     char name[50];
     printf("Enter Name: ");
-    fgets(name, 50, stdin);
+    scanf("%s", name);
 	int unique_medicines, id, medicine[20]={0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0};
 	FILE *filepointer, *fp, *filepointer2;
 	char ch;
