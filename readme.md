@@ -29,7 +29,7 @@ The proposed Pharmaceutical Management System automates stock management, order 
 
 Challenges faced during implementation include the login function, handling fgets(), and implementing the update function. The project breakdown structure outlines individual contributions, including login functions, bug reporting, order history, and receipt printing.
 
-# Project Breakdown Structure
+## Project Breakdown Structure
 
 ## Owais
 1. Starting of the pharmacist code by making the main function. (17-Nov)
