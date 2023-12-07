@@ -1,9 +1,8 @@
 <style>
-  strong{
+  strong {
     font-size: 12px;
   }
 </style>
-
 <strong>Group Members</strong><br><br>
 23K-2042 Muhammad Owais Muhammad Rafiq<br>
 23K-2016 Syed Umer Taiyab<br>
